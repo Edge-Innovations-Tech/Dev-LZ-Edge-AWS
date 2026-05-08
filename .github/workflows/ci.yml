@@ -1,0 +1,99 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  TF_VERSION: "1.11.2"
+  TFLINT_VERSION: "v0.61.0"
+
+jobs:
+  fmt:
+    name: Terraform Format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+      - run: terraform fmt -check -recursive
+
+  validate:
+    name: Terraform Validate
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        path: [envs/dev, modules/iam, modules/network, modules/compute, modules/containers, modules/serverless, modules/database, modules/storage, modules/object-storage, modules/dns, modules/monitoring, modules/cost]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+      - run: terraform init -backend=false
+        working-directory: ${{ matrix.path }}
+      - run: terraform validate
+        working-directory: ${{ matrix.path }}
+
+  tflint:
+    name: TFLint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: terraform-linters/setup-tflint@v4
+        with:
+          tflint_version: ${{ env.TFLINT_VERSION }}
+      - run: tflint --init
+      - run: tflint --recursive --config=$(pwd)/.tflint.hcl
+
+  trivy:
+    name: Trivy Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: config
+          scan-ref: .
+          exit-code: "1"
+          severity: CRITICAL,HIGH
+
+  terraform-docs:
+    name: Check Terraform Docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: terraform-docs/gh-actions@v1
+        with:
+          working-dir: modules/iam,modules/network,modules/compute,modules/containers,modules/serverless,modules/database,modules/storage,modules/object-storage,modules/dns,modules/monitoring,modules/cost
+          output-file: README.md
+          output-method: inject
+          fail-on-diff: true
+
+  test:
+    name: Terraform Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        module: [iam, network, compute, containers, serverless, database, storage, object-storage, dns, monitoring, cost]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+      - run: terraform init -backend=false
+        working-directory: modules/${{ matrix.module }}
+      - run: terraform test
+        working-directory: modules/${{ matrix.module }}
+
+  opa:
+    name: OPA Policy Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: open-policy-agent/setup-opa@v2
+        with:
+          version: latest
+      - run: opa test policy/ -v

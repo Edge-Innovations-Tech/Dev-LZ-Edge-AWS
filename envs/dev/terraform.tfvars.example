@@ -1,0 +1,13 @@
+name_prefix         = "cortex-dev"
+    region              = "us-east-1"
+    environment         = "dev"
+    owner               = "platform-engineering"
+    cost_center         = "cortex-dev"
+    data_classification = "internal"
+
+    provider_context = {
+  account_id = "123456789012"
+  oidc_role_arn = "arn:aws:iam::123456789012:role/GitHubActionsCortexDev"
+  state_bucket = "replace-cortex-dev-tfstate"
+  state_lock_table = "replace-cortex-dev-tf-locks"
+}
