@@ -24,17 +24,49 @@ auth=(-H "Authorization: Bearer ${TFC_TOKEN}" -H "Content-Type: application/vnd.
 upsert_var() {
   local key="$1" value="$2" category="$3" sensitive="${4:-false}"
   local existing
-  existing=$(curl -fsS "${auth[@]}" \
-    "${TFC_API}/workspaces/${WS_ID}/vars?filter%5Bkey%5D=${key}" \
-    | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['data'][0]['id'] if d.get('data') else '')" 2>/dev/null || true)
+  existing=$(curl -fsS "${auth[@]}" "${TFC_API}/workspaces/${WS_ID}/vars" \
+    | KEY="$key" python3 -c "import sys,json,os; d=json.load(sys.stdin); k=os.environ['KEY']; print(next((v['id'] for v in d.get('data',[]) if v['attributes'].get('key')==k), ''))")
   if [[ -n "${existing}" ]]; then
     local payload
-    payload=$(python3 -c "import json; print(json.dumps({'data':{'type':'vars','attributes':{'key':${key!r},'value':${value!r},'category':${category!r},'hcl':False,'sensitive':${sensitive}}}}))")
+    payload=$(KEY="$key" VALUE="$value" CATEGORY="$category" SENSITIVE="$sensitive" python3 <<'PY'
+import json, os
+print(json.dumps({
+  "data": {
+    "type": "vars",
+    "attributes": {
+      "key": os.environ["KEY"],
+      "value": os.environ["VALUE"],
+      "category": os.environ["CATEGORY"],
+      "hcl": False,
+      "sensitive": os.environ["SENSITIVE"].lower() == "true",
+    },
+  }
+}))
+PY
+)
     curl -fsS "${auth[@]}" -X PATCH -d "${payload}" "${TFC_API}/vars/${existing}" >/dev/null
     echo "updated var ${key}"
   else
     local payload
-    payload=$(python3 -c "import json; print(json.dumps({'data':{'type':'vars','attributes':{'key':${key!r},'value':${value!r},'category':${category!r},'hcl':False,'sensitive':${sensitive}},'relationships':{'workspace':{'data':{'type':'workspaces','id':${WS_ID!r}}}}}}))")
+    payload=$(KEY="$key" VALUE="$value" CATEGORY="$category" SENSITIVE="$sensitive" WS_ID="$WS_ID" python3 <<'PY'
+import json, os
+print(json.dumps({
+  "data": {
+    "type": "vars",
+    "attributes": {
+      "key": os.environ["KEY"],
+      "value": os.environ["VALUE"],
+      "category": os.environ["CATEGORY"],
+      "hcl": False,
+      "sensitive": os.environ["SENSITIVE"].lower() == "true",
+    },
+    "relationships": {
+      "workspace": {"data": {"type": "workspaces", "id": os.environ["WS_ID"]}}
+    },
+  }
+}))
+PY
+)
     curl -fsS "${auth[@]}" -X POST -d "${payload}" "${TFC_API}/vars" >/dev/null
     echo "created var ${key}"
   fi
@@ -56,7 +88,7 @@ cp -R "${MODULES_DIR}/." "${STAGE}/modules/network/"
 sed -i.bak 's|../../modules/network|./modules/network|g' "${STAGE}/main.tf"
 rm -f "${STAGE}/main.tf.bak"
 
-TMP_TAR="$(mktemp /tmp/tfc-config-XXXXXX.tar.gz)"
+TMP_TAR="$(mktemp -t tfc-config).tar.gz"
 tar -czf "${TMP_TAR}" -C "${STAGE}" .
 rm -rf "${STAGE}"
 
