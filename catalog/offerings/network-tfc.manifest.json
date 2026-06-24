@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "1.0",
+  "version": "0.1.0",
+  "basic": {
+    "title": "AWS Dev — Network Landing Zone (TFC)",
+    "description": "Provisions the Cortex AWS development network module via Terraform Cloud (Auralis/dev workspace).",
+    "categories": ["Landing Zone", "AWS", "Network"]
+  },
+  "userForm": [
+    {
+      "id": "name_prefix",
+      "label": "Name Prefix",
+      "type": "text",
+      "required": true,
+      "identifier": "name_prefix",
+      "defaultValue": "cortex-dev",
+      "description": "Prefix applied to network resources."
+    },
+    {
+      "id": "region",
+      "label": "AWS Region",
+      "type": "text",
+      "required": true,
+      "identifier": "region",
+      "defaultValue": "us-east-1"
+    },
+    {
+      "id": "environment",
+      "label": "Environment",
+      "type": "text",
+      "required": true,
+      "identifier": "environment",
+      "defaultValue": "dev"
+    },
+    {
+      "id": "owner",
+      "label": "Owner",
+      "type": "text",
+      "required": true,
+      "identifier": "owner",
+      "defaultValue": "platform-engineering"
+    },
+    {
+      "id": "cost_center",
+      "label": "Cost Center",
+      "type": "text",
+      "required": true,
+      "identifier": "cost_center",
+      "defaultValue": "cortex-dev"
+    },
+    {
+      "id": "data_classification",
+      "label": "Data Classification",
+      "type": "text",
+      "required": true,
+      "identifier": "data_classification",
+      "defaultValue": "internal"
+    }
+  ],
+  "backend": {
+    "invocationType": "TFC",
+    "deploymentTypes": ["Provision"],
+    "templateId": "ws-hRYiCkCytLuneW8K",
+    "cloudProvider": "AWS",
+    "githubRepo": "Edge-Innovations-Tech/Dev-LZ-Edge-AWS",
+    "githubVersion": "main"
+  },
+  "orchestration": {
+    "orchestration_method": "TFC-Run",
+    "orch_id": "ws-hRYiCkCytLuneW8K",
+    "parameters_passthrough": false,
+    "options": {
+      "auto_apply": false,
+      "message": "Cortex catalog AWS network provision",
+      "workspace_id": "ws-hRYiCkCytLuneW8K"
+    }
+  },
+  "tagAssociations": []
+}

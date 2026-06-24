@@ -1,0 +1,6 @@
+name_prefix         = "cortex-dev"
+region              = "us-east-1"
+environment         = "dev"
+owner               = "platform-engineering"
+cost_center         = "cortex-dev"
+data_classification = "internal"
