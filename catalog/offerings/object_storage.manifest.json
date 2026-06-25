@@ -1,0 +1,128 @@
+{
+  "schemaVersion": "1.0",
+  "version": "0.1.0",
+  "basic": {
+    "title": "AWS Dev \u2014 Object Storage Landing Zone",
+    "description": "Provisions the Cortex AWS development object-storage module (S3 buckets with block-public-access and versioning) via OpenTofu, executed through the cortex.terraform Ansible substrate on AAP. Set enable=true to create real AWS resources; false runs an inventory-only stub.",
+    "categories": [
+      "Landing Zone",
+      "AWS",
+      "Object Storage"
+    ]
+  },
+  "userForm": [
+    {
+      "id": "name_prefix",
+      "label": "Name Prefix",
+      "type": "text",
+      "required": true,
+      "identifier": "name_prefix",
+      "defaultValue": "cortex-dev"
+    },
+    {
+      "id": "environment",
+      "label": "Environment",
+      "type": "text",
+      "required": true,
+      "identifier": "environment",
+      "defaultValue": "dev"
+    },
+    {
+      "id": "owner",
+      "label": "Owner",
+      "type": "text",
+      "required": true,
+      "identifier": "owner",
+      "defaultValue": "platform-engineering"
+    },
+    {
+      "id": "cost_center",
+      "label": "Cost Center",
+      "type": "text",
+      "required": true,
+      "identifier": "cost_center",
+      "defaultValue": "cortex-dev"
+    },
+    {
+      "id": "data_classification",
+      "label": "Data Classification",
+      "type": "text",
+      "required": true,
+      "identifier": "data_classification",
+      "defaultValue": "internal"
+    },
+    {
+      "id": "account_id",
+      "label": "AWS Account ID",
+      "type": "text",
+      "required": true,
+      "identifier": "account_id",
+      "description": "12-digit AWS account ID for provider context and budgets."
+    },
+    {
+      "id": "region",
+      "label": "AWS Region",
+      "type": "text",
+      "required": true,
+      "identifier": "region",
+      "defaultValue": "us-east-1"
+    },
+    {
+      "id": "aws_profile",
+      "label": "AWS Profile",
+      "type": "text",
+      "required": false,
+      "identifier": "aws_profile",
+      "defaultValue": "default",
+      "description": "~/.aws/credentials profile name on the AAP execution environment."
+    },
+    {
+      "id": "enable",
+      "label": "Enable Real Resources",
+      "type": "text",
+      "required": true,
+      "identifier": "enable",
+      "defaultValue": "true",
+      "description": "true provisions real AWS resources; false runs an inventory-only stub."
+    },
+    {
+      "id": "service_config",
+      "label": "Service Config (JSON)",
+      "type": "text",
+      "required": false,
+      "identifier": "service_config",
+      "multiline": true,
+      "defaultValue": "{\"enable\": true, \"bucket_name\": \"cortex-dev-bucket\", \"versioning\": \"Enabled\"}",
+      "description": "Provider-specific object-storage configuration as JSON. Merged with the enable toggle and provider context."
+    }
+  ],
+  "backend": {
+    "invocationType": "Ansible Job",
+    "deploymentTypes": [
+      "Provision"
+    ],
+    "templateId": "cortex-terraform-execute",
+    "cloudProvider": "AWS",
+    "githubRepo": "Edge-Innovations-Tech/Dev-LZ-Edge-AWS",
+    "githubVersion": "main"
+  },
+  "orchestration": {
+    "orchestration_method": "AAP-Job",
+    "orch_id": "cortex-terraform-execute",
+    "parameters_passthrough": true,
+    "options": {
+      "substrate": "cortex-terraform",
+      "backend": "opentofu",
+      "cloud_provider": "AWS",
+      "source_git_repo": "Edge-Innovations-Tech/Dev-LZ-Edge-AWS",
+      "source_git_ref": "main",
+      "module_path": "modules/object-storage",
+      "workspace": "aws-dev-object_storage",
+      "environment": "dev",
+      "data_classification": "internal",
+      "aap_template_id": "8",
+      "aap_destroy_template_id": "8"
+    }
+  },
+  "tagAssociations": []
+}

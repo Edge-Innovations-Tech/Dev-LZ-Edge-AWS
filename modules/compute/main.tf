@@ -25,8 +25,11 @@ locals {
     environment         = var.environment
     tags                = local.cortex_tags
     provider_context    = var.provider_context
-    service_config      = var.service_config
+    service_config      = local.cmp_cfg
     zero_trust_controls = local.zero_trust_controls
+    enable_instance     = local.cmp_enable
+    instance_id         = try(aws_instance.this[0].id, null)
+    vpc_id              = local.cmp_existing_vpc != "" ? local.cmp_existing_vpc : null
   }
 }
 

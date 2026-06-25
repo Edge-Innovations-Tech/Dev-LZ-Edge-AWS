@@ -25,8 +25,10 @@ locals {
     environment         = var.environment
     tags                = local.cortex_tags
     provider_context    = var.provider_context
-    service_config      = var.service_config
+    service_config      = local.stor_cfg
     zero_trust_controls = local.zero_trust_controls
+    enable              = local.stor_enable
+    volume_id           = try(aws_ebs_volume.this[0].id, null)
   }
 }
 

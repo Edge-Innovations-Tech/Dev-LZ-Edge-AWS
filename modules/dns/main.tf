@@ -25,8 +25,10 @@ locals {
     environment         = var.environment
     tags                = local.cortex_tags
     provider_context    = var.provider_context
-    service_config      = var.service_config
+    service_config      = local.dns_cfg
     zero_trust_controls = local.zero_trust_controls
+    enable              = local.dns_enable
+    zone_id             = try(aws_route53_zone.this[0].zone_id, null)
   }
 }
 

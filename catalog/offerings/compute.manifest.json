@@ -1,0 +1,149 @@
+{
+  "schemaVersion": "1.0",
+  "version": "0.1.0",
+  "basic": {
+    "title": "AWS Dev — Compute Landing Zone",
+    "description": "Provisions the Cortex AWS development compute module (EC2 instances) via OpenTofu, executed through the cortex.terraform Ansible substrate on AAP. Set enable_instance=true to create a real Amazon Linux EC2 instance.",
+    "categories": [
+      "Landing Zone",
+      "AWS",
+      "Compute"
+    ]
+  },
+  "userForm": [
+    {
+      "id": "name_prefix",
+      "label": "Name Prefix",
+      "type": "text",
+      "required": true,
+      "identifier": "name_prefix",
+      "defaultValue": "cortex-dev"
+    },
+    {
+      "id": "environment",
+      "label": "Environment",
+      "type": "text",
+      "required": true,
+      "identifier": "environment",
+      "defaultValue": "dev"
+    },
+    {
+      "id": "owner",
+      "label": "Owner",
+      "type": "text",
+      "required": true,
+      "identifier": "owner",
+      "defaultValue": "platform-engineering"
+    },
+    {
+      "id": "cost_center",
+      "label": "Cost Center",
+      "type": "text",
+      "required": true,
+      "identifier": "cost_center",
+      "defaultValue": "cortex-dev"
+    },
+    {
+      "id": "data_classification",
+      "label": "Data Classification",
+      "type": "text",
+      "required": true,
+      "identifier": "data_classification",
+      "defaultValue": "internal"
+    },
+    {
+      "id": "account_id",
+      "label": "AWS Account ID",
+      "type": "text",
+      "required": true,
+      "identifier": "account_id",
+      "description": "12-digit AWS account ID."
+    },
+    {
+      "id": "region",
+      "label": "AWS Region",
+      "type": "text",
+      "required": true,
+      "identifier": "region",
+      "defaultValue": "us-east-1"
+    },
+    {
+      "id": "aws_profile",
+      "label": "AWS Profile",
+      "type": "text",
+      "required": false,
+      "identifier": "aws_profile",
+      "defaultValue": "default"
+    },
+    {
+      "id": "enable_instance",
+      "label": "Enable EC2 Instance",
+      "type": "text",
+      "required": true,
+      "identifier": "enable_instance",
+      "defaultValue": "true",
+      "description": "Set true to provision a real EC2 instance; false runs inventory-only stub."
+    },
+    {
+      "id": "existing_vpc_id",
+      "label": "Existing VPC ID (optional)",
+      "type": "text",
+      "required": false,
+      "identifier": "existing_vpc_id",
+      "description": "Reuse an existing VPC from the network stack step (via inputMapping)."
+    },
+    {
+      "id": "subnet_id",
+      "label": "Subnet ID",
+      "type": "text",
+      "required": false,
+      "identifier": "subnet_id",
+      "description": "Subnet for the EC2 instance. Required when enable_instance=true."
+    },
+    {
+      "id": "key_name",
+      "label": "EC2 Key Pair Name (optional)",
+      "type": "text",
+      "required": false,
+      "identifier": "key_name"
+    },
+    {
+      "id": "state_backend",
+      "label": "State Backend (JSON)",
+      "type": "text",
+      "required": false,
+      "identifier": "state_backend",
+      "multiline": true,
+      "defaultValue": "{\"type\":\"local\"}"
+    }
+  ],
+  "backend": {
+    "invocationType": "Ansible Job",
+    "deploymentTypes": [
+      "Provision"
+    ],
+    "templateId": "cortex-terraform-execute",
+    "cloudProvider": "AWS",
+    "githubRepo": "Edge-Innovations-Tech/Dev-LZ-Edge-AWS",
+    "githubVersion": "main"
+  },
+  "orchestration": {
+    "orchestration_method": "AAP-Job",
+    "orch_id": "cortex-terraform-execute",
+    "parameters_passthrough": true,
+    "options": {
+      "substrate": "cortex-terraform",
+      "backend": "opentofu",
+      "cloud_provider": "AWS",
+      "source_git_repo": "Edge-Innovations-Tech/Dev-LZ-Edge-AWS",
+      "source_git_ref": "main",
+      "module_path": "modules/compute",
+      "workspace": "aws-dev-compute",
+      "environment": "dev",
+      "data_classification": "internal",
+      "aap_template_id": "8",
+      "aap_destroy_template_id": "8"
+    }
+  },
+  "tagAssociations": []
+}

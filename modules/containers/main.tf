@@ -25,8 +25,12 @@ locals {
     environment         = var.environment
     tags                = local.cortex_tags
     provider_context    = var.provider_context
-    service_config      = var.service_config
+    service_config      = local.eks_cfg
     zero_trust_controls = local.zero_trust_controls
+    enable              = local.eks_enable
+    cluster_name        = try(aws_eks_cluster.this[0].name, null)
+    cluster_arn         = try(aws_eks_cluster.this[0].arn, null)
+    vpc_id              = local.eks_vpc_id != "" ? local.eks_vpc_id : null
   }
 }
 

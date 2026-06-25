@@ -25,8 +25,11 @@ locals {
     environment         = var.environment
     tags                = local.cortex_tags
     provider_context    = var.provider_context
-    service_config      = var.service_config
+    service_config      = local.db_cfg
     zero_trust_controls = local.zero_trust_controls
+    enable              = local.db_enable
+    db_instance_id      = try(aws_db_instance.this[0].id, null)
+    db_endpoint         = try(aws_db_instance.this[0].endpoint, null)
   }
 }
 

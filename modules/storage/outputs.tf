@@ -1,3 +1,8 @@
+output "volume_id" {
+  description = "ID of the created EBS volume when service_config.enable=true."
+  value       = try(aws_ebs_volume.this[0].id, null)
+}
+
 output "cortex_inventory" {
   description = "Cortex service catalog inventory for this landing-zone capability."
   value       = terraform_data.landing_zone_capability.output

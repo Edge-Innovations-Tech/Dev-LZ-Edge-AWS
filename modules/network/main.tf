@@ -25,8 +25,13 @@ locals {
     environment         = var.environment
     tags                = local.cortex_tags
     provider_context    = var.provider_context
-    service_config      = var.service_config
+    service_config      = local.net_cfg
     zero_trust_controls = local.zero_trust_controls
+    enable              = local.net_enable
+    vpc_id              = try(aws_vpc.this[0].id, null)
+    subnet_id           = try(aws_subnet.this[0].id, null)
+    subnet_ids          = try([aws_subnet.this[0].id], [])
+    security_group_id   = try(aws_security_group.this[0].id, null)
   }
 }
 

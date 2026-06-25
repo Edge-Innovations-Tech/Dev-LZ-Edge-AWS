@@ -25,8 +25,10 @@ locals {
     environment         = var.environment
     tags                = local.cortex_tags
     provider_context    = var.provider_context
-    service_config      = var.service_config
+    service_config      = local.cost_cfg
     zero_trust_controls = local.zero_trust_controls
+    enable              = local.cost_enable
+    budget_name         = try(aws_budgets_budget.this[0].name, null)
   }
 }
 

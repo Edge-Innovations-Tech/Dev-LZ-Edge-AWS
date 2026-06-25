@@ -25,8 +25,11 @@ locals {
     environment         = var.environment
     tags                = local.cortex_tags
     provider_context    = var.provider_context
-    service_config      = var.service_config
+    service_config      = local.iam_cfg
     zero_trust_controls = local.zero_trust_controls
+    enable              = local.iam_enable
+    role_arn            = try(aws_iam_role.this[0].arn, null)
+    role_name           = try(aws_iam_role.this[0].name, null)
   }
 }
 

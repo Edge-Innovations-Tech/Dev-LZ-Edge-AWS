@@ -25,8 +25,10 @@ locals {
     environment         = var.environment
     tags                = local.cortex_tags
     provider_context    = var.provider_context
-    service_config      = var.service_config
+    service_config      = local.mon_cfg
     zero_trust_controls = local.zero_trust_controls
+    enable              = local.mon_enable
+    topic_arn           = try(aws_sns_topic.this[0].arn, null)
   }
 }
 

@@ -25,8 +25,12 @@ locals {
     environment         = var.environment
     tags                = local.cortex_tags
     provider_context    = var.provider_context
-    service_config      = var.service_config
+    service_config      = local.fn_cfg
     zero_trust_controls = local.zero_trust_controls
+    enable              = local.fn_enable
+    function_name       = try(aws_lambda_function.this[0].function_name, null)
+    function_arn        = try(aws_lambda_function.this[0].arn, null)
+    subnet_ids          = local.fn_subnet_ids
   }
 }
 

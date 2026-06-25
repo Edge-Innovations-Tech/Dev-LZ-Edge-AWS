@@ -1,4 +1,5 @@
 .terraform/
+*.tfplan
 *.tfstate
 *.tfstate.*
 crash.log
@@ -11,3 +12,4 @@ override.tf.json
 terraform.tfvars
 terraform.tfvars.json
 .DS_Store
+modules/serverless/.lambda_*.zip
