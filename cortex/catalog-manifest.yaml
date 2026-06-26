@@ -5,114 +5,158 @@ metadata:
   provider: aws
   version: 0.1.0
   description: "AWS Cortex development landing-zone modules."
-  team: platform-engineering
-  contact: platform-engineering@company.com
+  maintainers:
+    - team: platform-engineering
+      contact: platform-engineering@company.com
+
 spec:
+  git_repo: Edge-Innovations-Tech/Dev-LZ-Edge-AWS
+  git_ref: main
+  state_backend_default:
+    type: s3
+    bucket: cortex-tfstate
+    region: us-east-1
+    dynamodb_table: cortex-terraform-locks
+
   modules:
     - name: iam
-  path: modules/iam
-  cortex_output_contract: cortex_inventory
-  required_tags:
-    - "cortex:environment"
-    - "cortex:owner"
-    - "cortex:cost_center"
-    - "cortex:data_classification"
-  policy_bundle: policy/cortex_guardrails.rego
-- name: network
-  path: modules/network
-  cortex_output_contract: cortex_inventory
-  required_tags:
-    - "cortex:environment"
-    - "cortex:owner"
-    - "cortex:cost_center"
-    - "cortex:data_classification"
-  policy_bundle: policy/cortex_guardrails.rego
-- name: compute
-  path: modules/compute
-  cortex_output_contract: cortex_inventory
-  required_tags:
-    - "cortex:environment"
-    - "cortex:owner"
-    - "cortex:cost_center"
-    - "cortex:data_classification"
-  policy_bundle: policy/cortex_guardrails.rego
-- name: containers
-  path: modules/containers
-  cortex_output_contract: cortex_inventory
-  required_tags:
-    - "cortex:environment"
-    - "cortex:owner"
-    - "cortex:cost_center"
-    - "cortex:data_classification"
-  policy_bundle: policy/cortex_guardrails.rego
-- name: serverless
-  path: modules/serverless
-  cortex_output_contract: cortex_inventory
-  required_tags:
-    - "cortex:environment"
-    - "cortex:owner"
-    - "cortex:cost_center"
-    - "cortex:data_classification"
-  policy_bundle: policy/cortex_guardrails.rego
-- name: database
-  path: modules/database
-  cortex_output_contract: cortex_inventory
-  required_tags:
-    - "cortex:environment"
-    - "cortex:owner"
-    - "cortex:cost_center"
-    - "cortex:data_classification"
-  policy_bundle: policy/cortex_guardrails.rego
-- name: storage
-  path: modules/storage
-  cortex_output_contract: cortex_inventory
-  required_tags:
-    - "cortex:environment"
-    - "cortex:owner"
-    - "cortex:cost_center"
-    - "cortex:data_classification"
-  policy_bundle: policy/cortex_guardrails.rego
-- name: object-storage
-  path: modules/object-storage
-  cortex_output_contract: cortex_inventory
-  required_tags:
-    - "cortex:environment"
-    - "cortex:owner"
-    - "cortex:cost_center"
-    - "cortex:data_classification"
-  policy_bundle: policy/cortex_guardrails.rego
-- name: dns
-  path: modules/dns
-  cortex_output_contract: cortex_inventory
-  required_tags:
-    - "cortex:environment"
-    - "cortex:owner"
-    - "cortex:cost_center"
-    - "cortex:data_classification"
-  policy_bundle: policy/cortex_guardrails.rego
-- name: monitoring
-  path: modules/monitoring
-  cortex_output_contract: cortex_inventory
-  required_tags:
-    - "cortex:environment"
-    - "cortex:owner"
-    - "cortex:cost_center"
-    - "cortex:data_classification"
-  policy_bundle: policy/cortex_guardrails.rego
-- name: cost
-  path: modules/cost
-  cortex_output_contract: cortex_inventory
-  required_tags:
-    - "cortex:environment"
-    - "cortex:owner"
-    - "cortex:cost_center"
-    - "cortex:data_classification"
-  policy_bundle: policy/cortex_guardrails.rego
+      path: modules/iam
+      catalog_template: aws-dev-iam
+      description: IAM roles, policies, and OIDC providers for the dev landing zone.
+      cortex_output_contract: cortex_inventory
+      required_tags:
+        - "cortex:environment"
+        - "cortex:owner"
+        - "cortex:cost_center"
+        - "cortex:data_classification"
+      policy_bundle: policy/cortex_guardrails.rego
+
+    - name: network
+      path: modules/network
+      catalog_template: aws-dev-network
+      description: VPC, subnets, gateways, and route tables.
+      cortex_output_contract: cortex_inventory
+      required_tags:
+        - "cortex:environment"
+        - "cortex:owner"
+        - "cortex:cost_center"
+        - "cortex:data_classification"
+      policy_bundle: policy/cortex_guardrails.rego
+
+    - name: compute
+      path: modules/compute
+      catalog_template: aws-dev-compute
+      description: EC2 instances and supporting compute resources.
+      cortex_output_contract: cortex_inventory
+      required_tags:
+        - "cortex:environment"
+        - "cortex:owner"
+        - "cortex:cost_center"
+        - "cortex:data_classification"
+      policy_bundle: policy/cortex_guardrails.rego
+
+    - name: containers
+      path: modules/containers
+      catalog_template: aws-dev-containers
+      description: EKS clusters and node groups.
+      cortex_output_contract: cortex_inventory
+      required_tags:
+        - "cortex:environment"
+        - "cortex:owner"
+        - "cortex:cost_center"
+        - "cortex:data_classification"
+      policy_bundle: policy/cortex_guardrails.rego
+
+    - name: serverless
+      path: modules/serverless
+      catalog_template: aws-dev-serverless
+      description: Lambda functions and triggers.
+      cortex_output_contract: cortex_inventory
+      required_tags:
+        - "cortex:environment"
+        - "cortex:owner"
+        - "cortex:cost_center"
+        - "cortex:data_classification"
+      policy_bundle: policy/cortex_guardrails.rego
+
+    - name: database
+      path: modules/database
+      catalog_template: aws-dev-database
+      description: RDS instances and connectivity.
+      cortex_output_contract: cortex_inventory
+      required_tags:
+        - "cortex:environment"
+        - "cortex:owner"
+        - "cortex:cost_center"
+        - "cortex:data_classification"
+      policy_bundle: policy/cortex_guardrails.rego
+
+    - name: storage
+      path: modules/storage
+      catalog_template: aws-dev-storage
+      description: EBS volumes and attachments.
+      cortex_output_contract: cortex_inventory
+      required_tags:
+        - "cortex:environment"
+        - "cortex:owner"
+        - "cortex:cost_center"
+        - "cortex:data_classification"
+      policy_bundle: policy/cortex_guardrails.rego
+
+    - name: object-storage
+      path: modules/object-storage
+      catalog_template: aws-dev-object-storage
+      description: S3 buckets and policies.
+      cortex_output_contract: cortex_inventory
+      required_tags:
+        - "cortex:environment"
+        - "cortex:owner"
+        - "cortex:cost_center"
+        - "cortex:data_classification"
+      policy_bundle: policy/cortex_guardrails.rego
+
+    - name: dns
+      path: modules/dns
+      catalog_template: aws-dev-dns
+      description: Route 53 hosted zones and records.
+      cortex_output_contract: cortex_inventory
+      required_tags:
+        - "cortex:environment"
+        - "cortex:owner"
+        - "cortex:cost_center"
+        - "cortex:data_classification"
+      policy_bundle: policy/cortex_guardrails.rego
+
+    - name: monitoring
+      path: modules/monitoring
+      catalog_template: aws-dev-monitoring
+      description: SNS topics, subscriptions, and alarms.
+      cortex_output_contract: cortex_inventory
+      required_tags:
+        - "cortex:environment"
+        - "cortex:owner"
+        - "cortex:cost_center"
+        - "cortex:data_classification"
+      policy_bundle: policy/cortex_guardrails.rego
+
+    - name: cost
+      path: modules/cost
+      catalog_template: aws-dev-cost
+      description: AWS Budgets and cost attribution.
+      cortex_output_contract: cortex_inventory
+      required_tags:
+        - "cortex:environment"
+        - "cortex:owner"
+        - "cortex:cost_center"
+        - "cortex:data_classification"
+      policy_bundle: policy/cortex_guardrails.rego
+
   catalog_tags:
     cloud: aws
     domain: landing-zone
     environment: dev
     tier: platform
+
   integrations:
     - opa
     - github-actions-oidc
