@@ -120,8 +120,8 @@
       "workspace": "aws-dev-network",
       "environment": "dev",
       "data_classification": "internal",
-      "aap_template_id": "8",
-      "aap_destroy_template_id": "8"
+      "aap_template_id": "9",
+      "aap_destroy_template_id": "9"
     }
   },
   "tagAssociations": []
