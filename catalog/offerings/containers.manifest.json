@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "basic": {
     "title": "AWS Dev \u2014 Containers Landing Zone",
-    "description": "Provisions the Cortex AWS development containers module (EKS clusters and managed node groups (consumes an existing VPC/subnets)) via OpenTofu, executed through the cortex.terraform Ansible substrate on AAP. Set enable=true to create real AWS resources; false runs an inventory-only stub.",
+    "description": "Provisions the AWS development landing-zone containers module (EKS clusters and managed node groups (consumes an existing VPC/subnets)) with OpenTofu, run by the platform's Ansible automation on AAP. Set enable=true to create real AWS resources; false runs an inventory-only stub.",
     "categories": [
       "Landing Zone",
       "AWS",

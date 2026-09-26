@@ -109,8 +109,8 @@ def build_manifest(capability: str, title_suffix: str, description_detail: str, 
         "basic": {
             "title": f"AWS Dev — {title_suffix} Landing Zone",
             "description": (
-                f"Provisions the Cortex AWS development {capability} module ({description_detail}) "
-                "via OpenTofu, executed through the cortex.terraform Ansible substrate on AAP. "
+                f"Provisions the AWS development landing-zone {capability} module ({description_detail}) "
+                "with OpenTofu, run by the platform's Ansible automation on AAP. "
                 "Set enable=true to create real AWS resources; false runs an inventory-only stub."
             ),
             "categories": ["Landing Zone", "AWS", title_suffix],
