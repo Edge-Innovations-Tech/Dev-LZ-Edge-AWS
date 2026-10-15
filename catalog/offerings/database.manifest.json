@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "basic": {
     "title": "AWS Dev \u2014 Database Landing Zone",
-    "description": "Provisions the Cortex AWS development database module (RDS instances with private subnet placement and encryption) via OpenTofu, executed through the cortex.terraform Ansible substrate on AAP. Set enable=true to create real AWS resources; false runs an inventory-only stub.",
+    "description": "Provisions the AWS development landing-zone database module (RDS instances with private subnet placement and encryption) with OpenTofu, run by the platform's Ansible automation on AAP. Set enable=true to create real AWS resources; false runs an inventory-only stub.",
     "categories": [
       "Landing Zone",
       "AWS",

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "basic": {
     "title": "AWS Dev \u2014 Cost Landing Zone",
-    "description": "Provisions the Cortex AWS development cost module (monthly AWS Budgets with threshold notifications) via OpenTofu, executed through the cortex.terraform Ansible substrate on AAP. Set enable=true to create real AWS resources; false runs an inventory-only stub.",
+    "description": "Provisions the AWS development landing-zone cost module (monthly AWS Budgets with threshold notifications) with OpenTofu, run by the platform's Ansible automation on AAP. Set enable=true to create real AWS resources; false runs an inventory-only stub.",
     "categories": [
       "Landing Zone",
       "AWS",

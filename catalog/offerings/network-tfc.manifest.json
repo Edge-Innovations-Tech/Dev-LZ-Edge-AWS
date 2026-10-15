@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "basic": {
     "title": "AWS Dev — Network Landing Zone (TFC)",
-    "description": "Provisions the Cortex AWS development network module via Terraform Cloud (Auralis/dev workspace).",
+    "description": "Provisions the AWS development landing-zone network module via Terraform Cloud (Auralis/dev workspace).",
     "categories": ["Landing Zone", "AWS", "Network"]
   },
   "userForm": [
@@ -71,7 +71,7 @@
     "parameters_passthrough": false,
     "options": {
       "auto_apply": false,
-      "message": "Cortex catalog AWS network provision",
+      "message": "Cantilever catalog AWS network provision",
       "workspace_id": "ws-hRYiCkCytLuneW8K"
     }
   },

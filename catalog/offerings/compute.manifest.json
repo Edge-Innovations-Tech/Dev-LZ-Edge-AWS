@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "basic": {
     "title": "AWS Dev — Compute Landing Zone",
-    "description": "Provisions the Cortex AWS development compute module (EC2 instances) via OpenTofu, executed through the cortex.terraform Ansible substrate on AAP. Set enable_instance=true to create a real Amazon Linux EC2 instance.",
+    "description": "Provisions the AWS development landing-zone compute module (EC2 instances) with OpenTofu, run by the platform's Ansible automation on AAP. Set enable_instance=true to create a real Amazon Linux EC2 instance.",
     "categories": [
       "Landing Zone",
       "AWS",

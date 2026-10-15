@@ -4,7 +4,7 @@ metadata:
   name: Dev-LZ-Edge-AWS
   provider: aws
   version: 0.1.0
-  description: "AWS Cortex development landing-zone modules."
+  description: "AWS development landing-zone modules."
   maintainers:
     - team: platform-engineering
       contact: platform-engineering@company.com
